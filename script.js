@@ -3,7 +3,7 @@ if (sketchboard === null) {
     console.log("Cannot find that");
 }
 
-const iCount = 20;
+const iCount = 16;
 
 for (i = 0; i < iCount; i++) {
     // create 'major' grid
@@ -20,3 +20,6 @@ for (i = 0; i < iCount; i++) {
     sketchboard.appendChild(majorGrid);    
 }
 
+sketchboard.addEventListener('mouseover', (e) => {
+    e.target.classList.add("pathed");
+})
