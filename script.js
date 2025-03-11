@@ -1,25 +1,32 @@
+const BOARD_SIZE = 700;
+
 const sketchboard = document.querySelector("#sketch-board");
 if (sketchboard === null) {
     console.log("Cannot find that");
 }
 
-const iCount = 16;
+// set board size
+sketchboard.style.width = `${BOARD_SIZE}px`;
+sketchboard.style.height = `${BOARD_SIZE}px`;
 
-for (i = 0; i < iCount; i++) {
-    // create 'major' grid
-    let majorGrid = document.createElement("div");
-    majorGrid.classList.add("major-grid");
+// number of grid for each side (will be made changeable later)
+const sideCount = 11;
 
-    //create 'minor' grid
-    for (let j = 0; j < iCount; j++) {
-        let minorGrid = document.createElement("div");
-        minorGrid.classList.add("minor-grid");
-        majorGrid.appendChild(minorGrid);
-    };
-    
-    sketchboard.appendChild(majorGrid);    
+
+// calculate the size for each grid and number of grids
+const gridSize = BOARD_SIZE / sideCount;
+const gridCount = sideCount * sideCount;
+
+for (let i = 0; i < gridCount; i++) {
+    const minorGrid = document.createElement('div');
+    minorGrid.textContent = `${i+1}`;
+    minorGrid.classList.add('minor-grid');
+    minorGrid.style.minWidth = `${gridSize}px`;
+    minorGrid.style.height = `${gridSize}px`;
+    minorGrid.addEventListener
+    sketchboard.appendChild(minorGrid);
 }
 
 sketchboard.addEventListener('mouseover', (e) => {
-    e.target.classList.add("pathed");
+    e.target.classList.add('tainted');
 })
