@@ -40,9 +40,19 @@ createGrids(DEFAULT_COUNT);
 function createCustomGrids() {
 
     // get number of grid for each side from prompt
-    const sideCount = prompt("Number of squares per side, 1-100: ");
-    clearBoard();
-    createGrids(sideCount);
+    const sideCount = parseInt(prompt("Number of squares per side, 1-100: "));
+    if (validInput(sideCount)) {
+        clearBoard();
+        createGrids(sideCount);    
+    } else {
+        alert("Please enter a valid number from 1 to 100");
+    }
+    
+}
+
+function validInput(inputString) {
+    return (parseInt(inputString) >= 1 && parseInt(inputString) <= 100);
+        
 }
 
 function clearBoard(){
@@ -59,7 +69,6 @@ function resetBoard() {
         (el) => el.style.removeProperty('background-color')
     );
 }
-
 
 
 function createGrids(sideCount) {
