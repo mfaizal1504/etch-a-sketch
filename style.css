@@ -83,3 +83,9 @@ body {
 .options {
     padding: 2px;
 }
+
+#footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+}
