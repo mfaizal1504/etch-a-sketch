@@ -78,3 +78,15 @@ body {
 .tainted {
     background-color: var(--taint-color);
 }
+
+#addon {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+}
+
+.options {
+    padding: 2px;
+}
