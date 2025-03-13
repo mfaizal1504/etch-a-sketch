@@ -10,6 +10,19 @@ const resetButton = document.querySelector("#reset-sketchpad")
 const defaultRadio = document.querySelector("#default");
 const colorfulRadio = document.querySelector("#colorful");
 
+// read values from css file
+const root = document.querySelector(':root');
+let defaultLineColor = getComputedStyle(root).getPropertyValue('--line-color');
+let defaultBackColor = getComputedStyle(root).getPropertyValue('--bg-color');
+let defaultTaintColor = getComputedStyle(root).getPropertyValue('--taint-color');
+
+// set board size
+sketchboard.style.width = `${BOARD_SIZE}px`;
+sketchboard.style.height = `${BOARD_SIZE}px`;
+
+// button actions
+setSizeButton.addEventListener('click', createCustomGrids);
+resetButton.addEventListener('click', resetBoard);
 
 // checks (temp)
 if (defaultRadio === null) {
@@ -24,14 +37,9 @@ if (colorfulRadio === null) {
     console.log("Default selected");
 }
 
-// set board size
-sketchboard.style.width = `${BOARD_SIZE}px`;
-sketchboard.style.height = `${BOARD_SIZE}px`;
-
-
-// button actions
-setSizeButton.addEventListener('click', createCustomGrids);
-resetButton.addEventListener('click', resetBoard);
+console.log(defaultBackColor);
+console.log(defaultLineColor);
+console.log(defaultTaintColor);
 
 // default when starting up
 createGrids(DEFAULT_COUNT);
@@ -61,7 +69,7 @@ function clearBoard(){
 }
 
 function resetBoard() {
-    // reset the grids to untainted form
+    // reset the grids to untainted form while keeping the grids
     Array.from(document.querySelectorAll('.minor-grid.tainted')).forEach(
         (el) => el.classList.remove('tainted')
     );
@@ -69,7 +77,6 @@ function resetBoard() {
         (el) => el.style.removeProperty('background-color')
     );
 }
-
 
 function createGrids(sideCount) {
     // create grids based on number of sideCount
@@ -82,21 +89,36 @@ function createGrids(sideCount) {
         const minorGrid = document.createElement('div');
         // minorGrid.textContent = `${i+1}`;
         minorGrid.classList.add('minor-grid');
+        // add classes to be used as indicator for coloring
+        minorGrid.classList.add('no-pass'); // for slow fill (no-pass, mid-pass, full-pass)
+        minorGrid.classList.add('min-opacity'); // for incinerate (min-opacity, mid-opacity, max-opacity)
         minorGrid.style.minWidth = `${gridSize}px`;
         minorGrid.style.height = `${gridSize}px`;
-        minorGrid.addEventListener
+        // add opacity value for incinerate option
+        minorGrid.style.opacity = '1.0';
+        // minorGrid.addEventListener
         sketchboard.appendChild(minorGrid);
     }
 
     sketchboard.addEventListener('mouseover', (e) => {
         if (defaultRadio.checked) { // taint using default color
-            e.target.style.removeProperty('background-color');
-            e.target.classList.add('tainted');
+            defaultTaint(e);
         } else if (colorfulRadio.checked) { // taint using random rgb
-            e.target.style.backgroundColor = randomizeColor();
+            colorfulTaint(e);
         }
         
     })
+}
+
+function defaultTaint(e) {
+    // default, assign a class with formats predefined in css file
+    e.target.style.removeProperty('background-color');
+    e.target.classList.add('tainted');
+}
+
+function colorfulTaint(e) {
+    // assign random color to selected grid
+    e.target.style.backgroundColor = randomizeColor();
 }
 
 function randomizeColor() {
