@@ -8,6 +8,7 @@
     --line-color: rgb(0, 0, 0);
     --bg-color: rgb(228, 228, 228);
     --taint-color: rgb(16, 224, 61);
+    --corrode-color: rgb(94, 15, 15);
 }
 
 h1 {
@@ -70,6 +71,11 @@ body {
 
 .tainted {
     background-color: var(--taint-color);
+}
+
+.corroded {
+    background-color: var(--corrode-color);
+    border: none;
 }
 
 #addon {

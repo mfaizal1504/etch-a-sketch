@@ -92,7 +92,9 @@ function resetBoard() {
     Array.from(document.querySelectorAll('.minor-grid')).forEach(
         (el) => el.style.removeProperty('opacity')
     );
-    
+    Array.from(document.querySelectorAll('.minor-grid.corroded')).forEach(
+        (el) => el.classList.remove('tainted')
+    );
 }
 
 function createGrids(sideCount) {
@@ -160,12 +162,12 @@ function clearAcid(e) {
 }
 
 function acidTaint(e) {
-    // change color by changing opacity (actually changing it to default background)
+    // making gradual change of color by changing opacity
     if (e.target.classList.contains('min-opacity')) {
         e.target.style.removeProperty('background-color');
         e.target.classList.remove('min-opacity');
         e.target.classList.add('mid-opacity');
-        e.target.classList.add('tainted');
+        e.target.classList.add('corroded');
         e.target.style.opacity = 0.1;
     } else if (e.target.classList.contains('mid-opacity')) {
         let currentOpacity = e.target.style.opacity;
