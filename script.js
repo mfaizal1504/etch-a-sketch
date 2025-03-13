@@ -157,7 +157,7 @@ function clearAcid(e) {
         }
 
         if (e.target.classList.contains('max-opacity')) {
-            e.target.classList.remove('mid-opacity')
+            e.target.classList.remove('max-opacity')
         }
     }
 }
