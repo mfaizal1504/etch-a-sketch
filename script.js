@@ -84,7 +84,7 @@ function resetBoard() {
         (el) => el.classList.remove('mid-opacity')
     );
     Array.from(document.querySelectorAll('.minor-grid')).forEach(
-        (el) => el.style.removeProperty('max-opacity')
+        (el) => el.classList.remove('max-opacity')
     );
     Array.from(document.querySelectorAll('.minor-grid')).forEach(
         (el) => el.classList.add('min-opacity')
@@ -104,16 +104,13 @@ function createGrids(sideCount) {
 
     for (let i = 0; i < gridCount; i++) {
         const minorGrid = document.createElement('div');
-        // minorGrid.textContent = `${i+1}`;
+        // minorGrid.textContent = `${i+1}`; // to check number of grids
         minorGrid.classList.add('minor-grid');
         // add classes to be used as indicator for coloring
         minorGrid.classList.add('no-pass'); // for slow fill (no-pass, mid-pass, full-pass)
-        minorGrid.classList.add('min-opacity'); // for incinerate (min-opacity, mid-opacity, max-opacity)
+        minorGrid.classList.add('min-opacity'); // for acid (min-opacity, mid-opacity, max-opacity)
         minorGrid.style.minWidth = `${gridSize}px`;
         minorGrid.style.height = `${gridSize}px`;
-        // // add opacity value for incinerate option
-        // minorGrid.style.opacity = '1.0';
-        // minorGrid.addEventListener
         sketchboard.appendChild(minorGrid);
     }
 
@@ -131,18 +128,41 @@ function createGrids(sideCount) {
 
 function defaultTaint(e) {
     // default, assign a class with formats predefined in css file
-    e.target.style.removeProperty('background-color');
-    e.target.classList.add('tainted');
+    if (e.target.classList.contains('minor-grid')) {
+        clearAcid(e);
+        e.target.style.removeProperty('background-color');
+        e.target.classList.add('tainted');
+    }
 }
 
 function colorfulTaint(e) {
     // assign random color to selected grid
-    e.target.style.backgroundColor = randomizeColor();
+    if (e.target.classList.contains('minor-grid')) {
+        clearAcid(e);
+        e.target.style.backgroundColor = randomizeColor();
+    }
+}
+
+function clearAcid(e) {
+    // remove formatting made by acid function
+    if (e.target.classList.contains('minor-grid')) {
+        e.target.style.removeProperty('opacity');
+        e.target.classList.add('min-opacity');
+        
+        if (e.target.classList.contains('mid-opacity')) {
+            e.target.classList.remove('mid-opacity')
+        }
+
+        if (e.target.classList.contains('max-opacity')) {
+            e.target.classList.remove('mid-opacity')
+        }
+    }
 }
 
 function acidTaint(e) {
     // change color by changing opacity (actually changing it to default background)
     if (e.target.classList.contains('min-opacity')) {
+        e.target.style.removeProperty('background-color');
         e.target.classList.remove('min-opacity');
         e.target.classList.add('mid-opacity');
         e.target.classList.add('tainted');
