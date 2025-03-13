@@ -9,6 +9,7 @@ const setSizeButton = document.querySelector("#set-sketchpad")
 const resetButton = document.querySelector("#reset-sketchpad")
 const defaultRadio = document.querySelector("#default");
 const colorfulRadio = document.querySelector("#colorful");
+const acidRadio = document.querySelector("#acid");
 
 // read values from css file
 const root = document.querySelector(':root');
@@ -70,12 +71,28 @@ function clearBoard(){
 
 function resetBoard() {
     // reset the grids to untainted form while keeping the grids
+    // remove default taint
     Array.from(document.querySelectorAll('.minor-grid.tainted')).forEach(
         (el) => el.classList.remove('tainted')
     );
+    // remove colorful taint
     Array.from(document.querySelectorAll('.minor-grid')).forEach(
         (el) => el.style.removeProperty('background-color')
     );
+    // remove acid taint
+    Array.from(document.querySelectorAll('.minor-grid')).forEach(
+        (el) => el.classList.remove('mid-opacity')
+    );
+    Array.from(document.querySelectorAll('.minor-grid')).forEach(
+        (el) => el.style.removeProperty('max-opacity')
+    );
+    Array.from(document.querySelectorAll('.minor-grid')).forEach(
+        (el) => el.classList.add('min-opacity')
+    );
+    Array.from(document.querySelectorAll('.minor-grid')).forEach(
+        (el) => el.style.removeProperty('opacity')
+    );
+    
 }
 
 function createGrids(sideCount) {
@@ -94,8 +111,8 @@ function createGrids(sideCount) {
         minorGrid.classList.add('min-opacity'); // for incinerate (min-opacity, mid-opacity, max-opacity)
         minorGrid.style.minWidth = `${gridSize}px`;
         minorGrid.style.height = `${gridSize}px`;
-        // add opacity value for incinerate option
-        minorGrid.style.opacity = '1.0';
+        // // add opacity value for incinerate option
+        // minorGrid.style.opacity = '1.0';
         // minorGrid.addEventListener
         sketchboard.appendChild(minorGrid);
     }
@@ -105,6 +122,8 @@ function createGrids(sideCount) {
             defaultTaint(e);
         } else if (colorfulRadio.checked) { // taint using random rgb
             colorfulTaint(e);
+        } else if (acidRadio.checked) {
+            acidTaint(e);
         }
         
     })
@@ -119,6 +138,27 @@ function defaultTaint(e) {
 function colorfulTaint(e) {
     // assign random color to selected grid
     e.target.style.backgroundColor = randomizeColor();
+}
+
+function acidTaint(e) {
+    // change color by changing opacity (actually changing it to default background)
+    if (e.target.classList.contains('min-opacity')) {
+        e.target.classList.remove('min-opacity');
+        e.target.classList.add('mid-opacity');
+        e.target.classList.add('tainted');
+        e.target.style.opacity = 0.1;
+    } else if (e.target.classList.contains('mid-opacity')) {
+        let currentOpacity = e.target.style.opacity;
+        currentOpacity = parseFloat(currentOpacity) + 0.1;
+        if (currentOpacity < 1.0) {
+            e.target.style.opacity = currentOpacity;
+        } else {
+            e.target.style.opacity = currentOpacity;
+            e.target.classList.remove('mid-opacity');
+            e.target.classList.add('max-opacity');
+        }
+    }
+    
 }
 
 function randomizeColor() {
