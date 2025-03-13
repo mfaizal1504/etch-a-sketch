@@ -93,7 +93,7 @@ function resetBoard() {
         (el) => el.style.removeProperty('opacity')
     );
     Array.from(document.querySelectorAll('.minor-grid.corroded')).forEach(
-        (el) => el.classList.remove('tainted')
+        (el) => el.classList.remove('corroded')
     );
 }
 
