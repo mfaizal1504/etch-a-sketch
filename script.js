@@ -149,6 +149,7 @@ function clearAcid(e) {
     // remove formatting made by acid function
     if (e.target.classList.contains('minor-grid')) {
         e.target.style.removeProperty('opacity');
+        e.target.classList.remove('corroded');
         e.target.classList.add('min-opacity');
         
         if (e.target.classList.contains('mid-opacity')) {
