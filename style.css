@@ -66,6 +66,9 @@ body {
 .minor-grid {
     border: 1px solid var(--line-color);
     flex: 1;
+}
+
+.default-color {
     background-color: var(--bg-color);
 }
 
